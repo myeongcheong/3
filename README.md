@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<title>별의 끝에서</title>
+<style>
+/* =====================================================
+   BASIC
+===================================================== */
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+html,
+body{
+    width:100%;
+    height:100%;
+}
+body{
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #18204a 0%,
+            #090d27 38%,
+            #030510 80%
+        );
+    color:#f3f5ff;
+    font-family:
+        "Noto Serif KR",
+        Georgia,
+        serif;
+}
+/* =====================================================
+   NIGHT SKY
+===================================================== */
+#sky{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:-10;
+    background:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(80,100,190,.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(110,70,190,.13),
+            transparent 30%
+        );
+}
+/* =====================================================
+   STARS
+===================================================== */
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:
+        0 0 6px rgba(190,210,255,.9);
+    animation:
+        twinkle
+        var(--duration)
+        ease-in-out
+        infinite;
+    opacity:.7;
+}
+@keyframes twinkle{
+    0%{
+        opacity:.2;
+        transform:scale(.7);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.5);
+    }
+    100%{
+        opacity:.2;
+        transform:scale(.7);
+    }
+}
+/* =====================================================
+   LARGE MAGIC STARS
+===================================================== */
+.magic-star{
+    position:absolute;
+    color:#d8e2ff;
+    font-size:20px;
+    text-shadow:
+        0 0 8px #a7bdff,
+        0 0 25px #7897ff;
+    animation:
+        magicTwinkle 3s
+        ease-in-out
+        infinite;
+}
+@keyframes magicTwinkle{
+    0%,
+    100%{
+        opacity:.35;
+        transform:scale(.8) rotate(0deg);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.3) rotate(25deg);
+    }
+}
+/* =====================================================
+   SHOOTING STAR
+===================================================== */
+.shooting-star{
+    position:absolute;
+    width:180px;
+    height:1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #dce7ff,
+            transparent
+        );
+    transform:
+        rotate(-35deg);
+    opacity:0;
+    animation:
+        shooting 8s
+        linear
+        infinite;
+}
+@keyframes shooting{
+    0%{
+        opacity:0;
+        transform:
+            translate(300px,-300px)
+            rotate(-35deg);
+    }
+    10%{
+        opacity:1;
+    }
+    25%{
+        opacity:0;
+        transform:
+            translate(-500px,500px)
+            rotate(-35deg);
+    }
+    100%{
+        opacity:0;
+    }
+}
+/* =====================================================
+   MAGIC CIRCLE
+===================================================== */
+.magic-circle{
+    position:absolute;
+    width:480px;
+    height:480px;
+    border-radius:50%;
+    border:
+        1px solid
+        rgba(160,184,255,.12);
+    box-shadow:
+        0 0 80px
+        rgba(100,130,255,.06);
+    animation:
+        circleRotate
+        50s
+        linear
+        infinite;
+    pointer-events:none;
+}
+.magic-circle::before{
+    content:"";
+    position:absolute;
+    inset:35px;
+    border-radius:50%;
+    border:
+        1px dashed
+        rgba(175,195,255,.14);
+}
+.magic-circle::after{
+    content:"✦";
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:
+        translate(-50%,-50%);
+    color:#b9caff;
+    font-size:28px;
+    text-shadow:
+        0 0 20px #7697ff;
+}
+@keyframes circleRotate{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+/* =====================================================
+   HEADER
+===================================================== */
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:
+        0 45px;
+    z-index:100;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(2,4,17,.9),
+            transparent
+        );
+}
+/* LOGO */
+.logo{
+    cursor:pointer;
+    user-select:none;
+}
+.logo-small{
+    display:block;
+    font-family:
+        Georgia,
+        serif;
+    font-size:9px;
+    letter-spacing:4px;
+    color:#7885ad;
+    margin-bottom:5px;
+}
+.logo-title{
+    font-size:17px;
+    letter-spacing:4px;
+    color:#fff;
+    text-shadow:
+        0 0 15px
+        rgba(160,185,255,.5);
+}
+/* =====================================================
+   NAV
+===================================================== */
+nav{
+    display:flex;
+    gap:28px;
+}
+nav button{
+    border:none;
+    background:none;
+    color:#858eae;
+    cursor:pointer;
+    font-family:
+        Georgia,
+        serif;
+    font-size:11px;
+    letter-spacing:2px;
+    transition:.3s;
+}
+nav button:hover{
+    color:white;
+    text-shadow:
+        0 0 12px #91aaff;
+}
+/* =====================================================
+   PAGE SYSTEM
+===================================================== */
+.page{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    padding:
+        110px 7vw 50px;
+    opacity:0;
+    visibility:hidden;
+    transform:
+        scale(.97)
+        translateY(15px);
+    transition:
+        opacity .45s ease,
+        transform .45s ease,
+        visibility .45s;
+    overflow:hidden;
+}
+.page.active{
+    opacity:1;
+    visibility:visible;
+    transform:
+        scale(1)
+        translateY(0);
+}
+/* =====================================================
+   HOME
+===================================================== */
+#home{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+.home-content{
+    position:relative;
+    z-index:5;
+    margin-top:-20px;
+}
+.home-small{
+    font-family:
+        Georgia,
+        serif;
+    font-size:11px;
+    letter-spacing:6px;
+    color:#8996c2;
+}
+.home-title{
+    margin-top:25px;
+    font-size:
+        clamp(42px,6vw,82px);
+    font-weight:300;
+    line-height:1.1;
+    letter-spacing:-3px;
+    text-shadow:
+        0 0 40px
+        rgba(135,165,255,.25);
+}
+.home-title span{
+    font-family:
+        Georgia,
+        serif;
+    color:#cbd7ff;
+    text-shadow:
+        0 0 20px
+        rgba(139,170,255,.8);
+}
+.home-description{
+    margin-top:28px;
+    color:#8991ae;
+    font-size:13px;
+    line-height:2;
+}
+/* =====================================================
+   START BUTTON
+===================================================== */
+.start-button{
+    position:relative;
+    margin-top:40px;
+    padding:
+        15px 34px;
+    background:
+        rgba(25,31,76,.35);
+    border:
+        1px solid
+        rgba(166,188,255,.4);
+    color:white;
+    cursor:pointer;
+    font-family:
+        Georgia,
+        serif;
+    letter-spacing:3px;
+    transition:.35s;
+    overflow:hidden;
+}
+.start-button::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.2),
+            transparent
+        );
+    transition:.5s;
+}
+.start-button:hover::before{
+    left:100%;
+}
+.start-button:hover{
+    border-color:#dbe4ff;
+    box-shadow:
+        0 0 30px
+        rgba(116,148,255,.3);
+}
+/* =====================================================
+   MOON
+===================================================== */
+.moon{
+    position:absolute;
+    right:10%;
+    top:20%;
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff,
+            #d0dbff 45%,
+            #8997ce
+        );
+    box-shadow:
+        0 0 30px
+        rgba(196,211,255,.5),
+        0 0 100px
+        rgba(108,139,255,.25);
+    opacity:.75;
+}
+/* =====================================================
+   HOME BOTTOM
+===================================================== */
+.home-bottom{
+    position:absolute;
+    bottom:35px;
+    left:50%;
+    transform:
+        translateX(-50%);
+    font-family:
+        Georgia,
+        serif;
+    font-size:9px;
+    letter-spacing:4px;
+    color:#59627f;
+}
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+.section-title{
+    position:relative;
+    margin-bottom:45px;
+}
+.section-title small{
+    font-family:
+        Georgia,
+        serif;
+    color:#6e7ba7;
+    font-size:10px;
+    letter-spacing:4px;
+}
+.section-title h2{
+    margin-top:8px;
+    font-size:32px;
+    font-weight:400;
+    letter-spacing:-1px;
+}
+.section-title::after{
+    content:"✦";
+    position:absolute;
+    left:190px;
+    bottom:4px;
+    color:#91aaff;
+    text-shadow:
+        0 0 12px #91aaff;
+}
+/* =====================================================
+   WORLD
+===================================================== */
+.world-layout{
+    width:90%;
+    max-width:1050px;
+    height:calc(100% - 100px);
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:90px;
+}
+.world-symbol{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:400px;
+    position:relative;
+}
+.world-star{
+    font-size:110px;
+    color:#e4eaff;
+    text-shadow:
+        0 0 15px #a5bcff,
+        0 0 60px #718fff;
+    animation:
+        starFloat
+        4s
+        ease-in-out
+        infinite;
+}
+@keyframes starFloat{
+    50%{
+        transform:
+            translateY(-12px)
+            rotate(8deg)
+            scale(1.08);
+    }
+}
+.world-orbit{
+    position:absolute;
+    width:330px;
+    height:120px;
+    border:
+        1px solid
+        rgba(161,185,255,.2);
+    border-radius:50%;
+    transform:rotate(35deg);
+}
+.world-orbit.two{
+    transform:rotate(-35deg);
+}
+.world-text{
+    flex:1;
+    color:#aeb5cb;
+    line-height:2;
+    font-size:13px;
+}
+.world-text .quote{
+    color:#dbe4ff;
+    font-family:
+        Georgia,
+        serif;
+    font-size:21px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+.world-text p{
+    margin-bottom:18px;
+}
+.world-text strong{
+    color:#d6e0ff;
+    font-weight:500;
+}
+/* =====================================================
+   CHARACTER PAGE
+===================================================== */
+.character-grid{
+    width:100%;
+    height:
+        calc(100% - 120px);
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:18px;
+    overflow:hidden;
+}
+.character-card{
+    position:relative;
+    height:100%;
+    min-height:300px;
+    border:
+        1px solid
+        rgba(168,188,255,.17);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30,37,83,.7),
+            rgba(6,8,25,.85)
+        );
+    cursor:pointer;
+    overflow:hidden;
+    transition:.4s;
+}
+.character-card:hover{
+    transform:
+        translateY(-8px);
+    border-color:
+        rgba(190,210,255,.6);
+    box-shadow:
+        0 15px 45px
+        rgba(77,103,190,.25);
+}
+.character-card::before{
+    content:"✦";
+    position:absolute;
+    top:25px;
+    right:25px;
+    color:#b9caff;
+    font-size:15px;
+    text-shadow:
+        0 0 10px #7896ff;
+    z-index:3;
+}
+.character-image{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:70px;
+    color:#b9caff;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(90,116,220,.3),
+            transparent 60%
+        );
+}
+.character-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.character-info{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:30px 22px 22px;
+    background:
+        linear-gradient(
+            transparent,
+            rgba(3,5,19,.98)
+        );
+    z-index:5;
+}
+.character-number{
+    font-family:
+        Georgia,
+        serif;
+    color:#68749f;
+    font-size:10px;
+    letter-spacing:3px;
+}
+.character-name{
+    margin-top:5px;
+    font-size:22px;
+    font-weight:400;
+}
+.character-role{
+    margin-top:4px;
+    color:#8b95b6;
+    font-family:
+        Georgia,
+        serif;
+    font-size:12px;
+}
+/* =====================================================
+   DETAIL
+===================================================== */
+.back{
+    position:absolute;
+    top:115px;
+    left:7vw;
+    background:none;
+    border:none;
+    color:#7f8aaf;
+    cursor:pointer;
+    font-family:
+        Georgia,
+        serif;
+    letter-spacing:2px;
+    transition:.3s;
+}
+.back:hover{
+    color:white;
+}
+.detail{
+    width:90%;
+    max-width:1100px;
+    height:100%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+}
+.detail-image{
+    width:45%;
+    height:75%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+.detail-image::before{
+    content:"";
+    position:absolute;
+    width:330px;
+    height:330px;
+    border-radius:50%;
+    background:
+        rgba(98,126,255,.15);
+    filter:blur(40px);
+}
+.detail-image img{
+    position:relative;
+    z-index:2;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+.detail-placeholder{
+    position:relative;
+    z-index:2;
+    width:260px;
+    height:390px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border:
+        1px solid
+        rgba(170,191,255,.2);
+    color:#c8d5ff;
+    font-size:90px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(110,137,255,.2),
+            transparent 65%
+        );
+}
+.detail-info{
+    width:55%;
+    padding-left:60px;
+}
+.detail-role{
+    color:#7785b4;
+    font-family:
+        Georgia,
+        serif;
+    font-size:11px;
+    letter-spacing:4px;
+}
+.detail-name{
+    margin-top:8px;
+    font-size:60px;
+    font-weight:300;
+    letter-spacing:-3px;
+}
+.detail-title{
+    margin-top:5px;
+    color:#9aa4c2;
+    font-family:
+        Georgia,
+        serif;
+    font-size:16px;
+}
+.detail-line{
+    width:100%;
+    height:1px;
+    margin:28px 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(180,200,255,.5),
+            transparent
+        );
+}
+.profile{
+    display:grid;
+    grid-template-columns:
+        repeat(2,1fr);
+    gap:20px;
+    margin-bottom:28px;
+}
+.profile div span{
+    display:block;
+    color:#67739d;
+    font-family:
+        Georgia,
+        serif;
+    font-size:9px;
+    letter-spacing:2px;
+    margin-bottom:6px;
+}
+.profile div strong{
+    font-size:12px;
+    font-weight:400;
+}
+.detail-description{
+    color:#a6adc3;
+    font-size:13px;
+    line-height:2;
+    margin-bottom:25px;
+}
+.detail-like{
+    display:flex;
+    gap:40px;
+    color:#929ab5;
+    font-size:11px;
+}
+.detail-like span{
+    display:block;
+    color:#65729d;
+    font-family:
+        Georgia,
+        serif;
+    font-size:9px;
+    letter-spacing:2px;
+    margin-bottom:5px;
+}
+/* =====================================================
+   RELATION
+===================================================== */
+.relation-area{
+    width:900px;
+    max-width:100%;
+    height:calc(100% - 100px);
+    margin:auto;
+    position:relative;
+}
+.you{
+    position:absolute;
+    top:45%;
+    left:50%;
+    transform:
+        translate(-50%,-50%);
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    border:
+        1px solid
+        rgba(191,207,255,.65);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:
+        rgba(10,14,43,.9);
+    box-shadow:
+        0 0 50px
+        rgba(107,139,255,.3);
+    z-index:5;
+    animation:
+        youGlow
+        3s
+        infinite;
+}
+.you span{
+    font-family:
+        Georgia,
+        serif;
+    color:#8795bf;
+    font-size:9px;
+    letter-spacing:3px;
+}
+.you b{
+    color:white;
+    font-size:25px;
+    margin-top:4px;
+}
+@keyframes youGlow{
+    50%{
+        box-shadow:
+            0 0 80px
+            rgba(107,139,255,.45);
+    }
+}
+.relation-line{
+    position:absolute;
+    height:1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(166,190,255,.4),
+            transparent
+        );
+}
+.line-left{
+    width:30%;
+    top:45%;
+    left:7%;
+}
+.line-right{
+    width:30%;
+    top:45%;
+    right:7%;
+}
+.relation-box{
+    position:absolute;
+    width:230px;
+    padding:25px;
+    border:
+        1px solid
+        rgba(164,187,255,.17);
+    background:
+        rgba(8,11,34,.8);
+    transition:.35s;
+}
+.relation-box:hover{
+    border-color:
+        rgba(190,210,255,.55);
+    transform:
+        translateY(-6px);
+}
+.relation-box.one{
+    top:28%;
+    left:0;
+}
+.relation-box.two{
+    top:28%;
+    right:0;
+}
+.relation-box.three{
+    bottom:3%;
+    left:50%;
+    transform:
+        translateX(-50%);
+}
+.relation-box.three:hover{
+    transform:
+        translateX(-50%)
+        translateY(-6px);
+}
+.relation-box small{
+    color:#66749f;
+    font-family:
+        Georgia,
+        serif;
+    letter-spacing:2px;
+}
+.relation-box h3{
+    margin-top:8px;
+    font-size:16px;
+    font-weight:400;
+}
+.relation-box p{
+    margin-top:10px;
+    color:#838da9;
+    font-size:11px;
+    line-height:1.8;
+}
+/* =====================================================
+   STORY
+===================================================== */
+.story{
+    width:800px;
+    max-width:100%;
+    height:calc(100% - 100px);
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.story-date{
+    color:#66739d;
+    font-family:
+        Georgia,
+        serif;
+    letter-spacing:3px;
+    font-size:10px;
+    margin-bottom:30px;
+}
+.story-text{
+    border-left:
+        1px solid
+        rgba(177,197,255,.25);
+    padding-left:40px;
+    color:#aeb5c9;
+    font-size:14px;
+    line-height:2.2;
+}
+.story-text p{
+    margin-bottom:18px;
+}
+.story-text .big{
+    font-family:
+        Georgia,
+        serif;
+    font-size:28px;
+    line-height:1.5;
+    color:#e2e8ff;
+    margin-bottom:30px;
+}
+.story-text .highlight{
+    color:#d9e3ff;
+    font-size:20px;
+    text-shadow:
+        0 0 15px
+        rgba(137,166,255,.6);
+}
+/* =====================================================
+   ABOUT
+===================================================== */
+.about{
+    width:900px;
+    max-width:100%;
+    height:calc(100% - 100px);
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:100px;
+}
+.about-title{
+    width:40%;
+    font-family:
+        Georgia,
+        serif;
+}
+.about-title small{
+    color:#68749e;
+    letter-spacing:4px;
+    font-size:10px;
+}
+.about-title h2{
+    margin-top:15px;
+    font-size:65px;
+    font-weight:400;
+    line-height:.9;
+    color:#dce5ff;
+    text-shadow:
+        0 0 30px
+        rgba(125,157,255,.3);
+}
+.about-text{
+    width:60%;
+    color:#9ea6bf;
+    font-size:13px;
+    line-height:2;
+}
+.about-text p{
+    margin-bottom:20px;
+}
+.about-info{
+    margin-top:35px;
+    padding-top:20px;
+    border-top:
+        1px solid
+        rgba(255,255,255,.1);
+    display:flex;
+    gap:50px;
+}
+.about-info span{
+    display:block;
+    font-family:
+        Georgia,
+        serif;
+    color:#65719a;
+    font-size:9px;
+    letter-spacing:2px;
+    margin-bottom:5px;
+}
+.about-info strong{
+    font-size:11px;
+    font-weight:400;
+}
+/* =====================================================
+   FOOTER
+===================================================== */
+footer{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:
+        translateX(-50%);
+    color:#4d5574;
+    font-family:
+        Georgia,
+        serif;
+    font-size:8px;
+    letter-spacing:3px;
+    z-index:90;
+}
+/* =====================================================
+   CLICK MAGIC
+===================================================== */
+.click-magic{
+    position:fixed;
+    pointer-events:none;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:white;
+    box-shadow:
+        0 0 10px white,
+        0 0 25px #91aaff;
+    z-index:999;
+    animation:
+        clickMagic .7s
+        ease-out
+        forwards;
+}
+@keyframes clickMagic{
+    0%{
+        opacity:1;
+        transform:scale(.5);
+    }
+    100%{
+        opacity:0;
+        transform:scale(4);
+    }
+}
+/* =====================================================
+   MOBILE / TABLET
+===================================================== */
+@media(max-width:900px){
+    header{
+        padding:
+            0 20px;
+    }
+    nav{
+        gap:12px;
+    }
+    nav button{
+        font-size:9px;
+    }
+    .moon{
+        opacity:.25;
+        right:-50px;
+    }
+    .character-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+        gap:12px;
+    }
+    .detail{
+        overflow-y:auto;
+        height:100%;
+        flex-direction:column;
+        padding-top:40px;
+    }
+    .detail-image{
+        width:100%;
+        height:45%;
+    }
+    .detail-info{
+        width:100%;
+        padding:
+            20px 0 80px;
+    }
+    .world-layout{
+        flex-direction:column;
+        justify-content:center;
+        gap:20px;
+        overflow-y:auto;
+    }
+    .world-symbol{
+        height:250px;
+        flex:none;
+    }
+    .world-text{
+        flex:none;
+    }
+    .about{
+        overflow-y:auto;
+        flex-direction:column;
+        justify-content:center;
+        gap:30px;
+    }
+    .about-title,
+    .about-text{
+        width:100%;
+    }
+}
+@media(max-width:600px){
+    header{
+        height:110px;
+        flex-direction:column;
+        justify-content:center;
+        gap:15px;
+    }
+    .logo-small{
+        display:none;
+    }
+    nav{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:8px 15px;
+    }
+    .page{
+        padding:
+            130px 20px 40px;
+    }
+    .home-title{
+        font-size:42px;
+    }
+    .moon{
+        width:100px;
+        height:100px;
+        top:22%;
+    }
+    .character-grid{
+        grid-template-columns:1fr;
+        height:
+            calc(100% - 100px);
+        overflow-y:auto;
+        padding-bottom:40px;
+    }
+    .character-card{
+        height:280px;
+        min-height:280px;
+    }
+    .relation-area{
+        overflow-y:auto;
+    }
+    .relation-box{
+        width:180px;
+    }
+    .detail-name{
+        font-size:43px;
+    }
+    .about-title h2{
+        font-size:50px;
+    }
+}
+/* =====================================================
+   END
+===================================================== */
+</style>
+</head>
+<body>
+<!-- =====================================================
+     SKY
+===================================================== -->
+<div id="sky">
+    <div class="shooting-star"
+         style="top:20%;left:80%;">
+    </div>
+    <div class="shooting-star"
+         style="top:60%;left:70%;animation-delay:4s;">
+    </div>
+    <div class="magic-star"
+         style="top:17%;left:18%;">
+        ✦
+    </div>
+    <div class="magic-star"
+         style="top:30%;left:70%;animation-delay:1s;">
+        ✧
+    </div>
+    <div class="magic-star"
+         style="top:75%;left:20%;animation-delay:2s;">
+        ✦
+    </div>
+    <div class="magic-star"
+         style="top:72%;right:15%;animation-delay:1.5s;">
+        ✧
+    </div>
+    <div class="magic-circle"></div>
+</div>
+<!-- =====================================================
+     HEADER
+===================================================== -->
+<header>
+    <div class="logo"
+         onclick="go('home')">
+        <span class="logo-small">
+            A STORY WRITTEN IN THE STARS
+        </span>
+        <span class="logo-title">
+            별의 끝에서
+        </span>
+    </div>
+    <nav>
+        <button onclick="go('home')">
+            HOME
+        </button>
+        <button onclick="go('world')">
+            WORLD
+        </button>
+        <button onclick="go('characters')">
+            CHARACTERS
+        </button>
+        <button onclick="go('relation')">
+            RELATION
+        </button>
+        <button onclick="go('story')">
+            STORY
+        </button>
+        <button onclick="go('about')">
+            ABOUT
+        </button>
+    </nav>
+</header>
+<!-- =====================================================
+     HOME
+===================================================== -->
+<section
+    id="home"
+    class="page active">
+    <div class="home-content">
+        <div class="home-small">
+            THE DESTINY WRITTEN ABOVE
+        </div>
+        <h1 class="home-title">
+            별의 끝에서<br>
+            <span>
+                너를 만났다
+            </span>
+        </h1>
+        <p class="home-description">
+            수많은 별이 태어나고 사라지는 밤.<br>
+            운명을 거스른 자들의 이야기가 시작된다.
+        </p>
+        <button
+            class="start-button"
+            onclick="go('story')">
+            ✦ &nbsp; STORY START
+        </button>
+    </div>
+    <div class="moon"></div>
+    <div class="home-bottom">
+        ✦ &nbsp;
+        EVERY STAR HAS ITS OWN DESTINY
+        &nbsp; ✦
+    </div>
+</section>
+<!-- =====================================================
+     WORLD
+===================================================== -->
+<section
+    id="world"
+    class="page">
+    <div class="section-title">
+        <small>
+            01 / WORLD
+        </small>
+        <h2>
+            별이 기억하는 세계
+        </h2>
+    </div>
+    <div class="world-layout">
+        <div class="world-symbol">
+            <div class="world-orbit"></div>
+            <div class="world-orbit two"></div>
+            <div class="world-star">
+                ✦
+            </div>
+        </div>
+        <div class="world-text">
+            <p class="quote">
+                「하늘의 별은 모든 인간의
+                운명을 알고 있다.」
+            </p>
+            <p>
+                이 세계에는 오래전부터
+                하나의 전설이 존재했다.
+            </p>
+            <p>
+                인간이 태어나는 순간,
+                하늘에서는 하나의 별이 태어난다.
+            </p>
+            <p>
+                그 별은 그 사람이 살아갈
+                운명을 비추는 존재라고 한다.
+            </p>
+            <p>
+                하지만 아주 드물게,
+                자신의 별이 정해준 운명을
+                거부하는 사람들이 나타난다.
+            </p>
+            <p>
+                사람들은 그들을
+                <strong>
+                    「별을 거스른 자」
+                </strong>
+                라고 불렀다.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- =====================================================
+     CHARACTERS
+===================================================== -->
+<section
+    id="characters"
+    class="page">
+    <div class="section-title">
+        <small>
+            02 / CHARACTERS
+        </small>
+        <h2>
+            별 아래에 모인 사람들
+        </h2>
+    </div>
+    <div
+        id="characterGrid"
+        class="character-grid">
+    </div>
+</section>
+<!-- =====================================================
+     CHARACTER DETAIL
+===================================================== -->
+<section
+    id="detail"
+    class="page">
+    <button
+        class="back"
+        onclick="go('characters')">
+        ← BACK TO CHARACTERS
+    </button>
+    <div class="detail">
+        <div class="detail-image">
+            <div
+                id="detailPlaceholder"
+                class="detail-placeholder">
+                ✦
+            </div>
+            <img
+                id="detailImage"
+                src=""
+                alt="">
+        </div>
+        <div class="detail-info">
+            <div
+                id="detailRole"
+                class="detail-role">
+                CHARACTER
+            </div>
+            <h2
+                id="detailName"
+                class="detail-name">
+                이름
+            </h2>
+            <div
+                id="detailTitle"
+                class="detail-title">
+                칭호
+            </div>
+            <div class="detail-line"></div>
+            <div class="profile">
+                <div>
+                    <span>AGE</span>
+                    <strong id="detailAge">
+                        -
+                    </strong>
+                </div>
+                <div>
+                    <span>GENDER</span>
+                    <strong id="detailGender">
+                        -
+                    </strong>
+                </div>
+                <div>
+                    <span>MAGIC</span>
+                    <strong id="detailMagic">
+                        -
+                    </strong>
+                </div>
+                <div>
+                    <span>STAR</span>
+                    <strong id="detailStar">
+                        -
+                    </strong>
+                </div>
+            </div>
+            <p
+                id="detailDescription"
+                class="detail-description">
+            </p>
+            <div class="detail-like">
+                <div>
+                    <span>LIKE</span>
+                    <p id="detailLike"></p>
+                </div>
+                <div>
+                    <span>DISLIKE</span>
+                    <p id="detailDislike"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- =====================================================
+     RELATION
+===================================================== -->
+<section
+    id="relation"
+    class="page">
+    <div class="section-title">
+        <small>
+            03 / RELATION
+        </small>
+        <h2>
+            별과 별 사이
+        </h2>
+    </div>
+    <div class="relation-area">
+        <div class="relation-line line-left"></div>
+        <div class="relation-line line-right"></div>
+        <div class="you">
+            <span>
+                YOU
+            </span>
+            <b>
+                ✦
+            </b>
+        </div>
+        <div class="relation-box one">
+            <small>
+                01
+            </small>
+            <h3>
+                운명의 동료
+            </h3>
+            <p>
+                같은 별을 바라보며
+                서로의 운명을 바꿔가는 관계.
+            </p>
+        </div>
+        <div class="relation-box two">
+            <small>
+                02
+            </small>
+            <h3>
+                별의 적
+            </h3>
+            <p>
+                서로 다른 운명을 가진 두 사람.
+                만날 수밖에 없는 관계.
+            </p>
+        </div>
+        <div class="relation-box three">
+            <small>
+                03
+            </small>
+            <h3>
+                아직 정해지지 않은 관계
+            </h3>
+            <p>
+                당신의 선택에 따라
+                새로운 별자리가 만들어진다.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- =====================================================
+     STORY
+===================================================== -->
+<section
+    id="story"
+    class="page">
+    <div class="section-title">
+        <small>
+            04 / STORY
+        </small>
+        <h2>
+            별이 떨어진 밤
+        </h2>
+    </div>
+    <div class="story">
+        <div class="story-date">
+            ASTERIA / 1007
+        </div>
+        <div class="story-text">
+            <p class="big">
+                그날 밤,<br>
+                별 하나가 하늘에서 떨어졌다.
+            </p>
+            <p>
+                평소와 다르지 않은 밤이었다.
+            </p>
+            <p>
+                달빛은 조용했고,
+                도시의 불빛은 하나둘 꺼지고 있었다.
+            </p>
+            <p>
+                그런데 갑자기,
+                하늘을 가득 채우고 있던 별 하나가
+                붉은 빛을 내며 떨어졌다.
+            </p>
+            <p>
+                사람들은 그것을
+                단순한 유성이라고 생각했다.
+            </p>
+            <p>
+                하지만 당신은 알고 있었다.
+            </p>
+            <p class="highlight">
+                저것은 별이 아니다.
+            </p>
+            <p>
+                그것은 누군가의 운명이었다.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+<section
+    id="about"
+    class="page">
+    <div class="section-title">
+        <small>
+            05 / ABOUT
+        </small>
+        <h2>
+            작품에 대하여
+        </h2>
+    </div>
+    <div class="about">
+        <div class="about-title">
+            <small>
+                A STORY WRITTEN
+            </small>
+            <h2>
+                IN<br>
+                THE<br>
+                STARS
+            </h2>
+        </div>
+        <div class="about-text">
+            <p>
+                이곳은 크랙AI 스토리
+                <strong>「별의 끝에서」</strong>
+                의 캐릭터 및 세계관 소개 페이지입니다.
+            </p>
+            <p>
+                등장인물과 세계관에 대한 정보는
+                스토리 진행에 따라 변경될 수 있습니다.
+            </p>
+            <div class="about-info">
+                <div>
+                    <span>
+                        CREATOR
+                    </span>
+                    <strong>
+                        YOUR NAME
+                    </strong>
+                </div>
+                <div>
+                    <span>
+                        PLATFORM
+                    </span>
+                    <strong>
+                        CRACK AI
+                    </strong>
+                </div>
+                <div>
+                    <span>
+                        GENRE
+                    </span>
+                    <strong>
+                        FANTASY
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+<footer>
+    ✦ &nbsp;
+    THE STORY IS NOT WRITTEN YET.
+    &nbsp; ✦
+</footer>
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+<script>
+/* =====================================================
+   CREATE RANDOM STARS
+===================================================== */
+const sky =
+    document.getElementById("sky");
+for(let i=0;i<130;i++){
+    const star =
+        document.createElement("div");
+    star.className = "star";
+    star.style.left =
+        Math.random()*100 + "%";
+    star.style.top =
+        Math.random()*100 + "%";
+    const size =
+        Math.random()*2 + 1;
+    star.style.width =
+        size + "px";
+    star.style.height =
+        size + "px";
+    star.style.setProperty(
+        "--duration",
+        (2 + Math.random()*5) + "s"
+    );
+    star.style.animationDelay =
+        Math.random()*5 + "s";
+    sky.appendChild(star);
+}
+/* =====================================================
+   CHARACTER DATA
+===================================================== */
+const characters = [
+    {
+        name:"루미엘",
+        role:"ASTROLOGER",
+        title:"별을 읽는 마법사",
+        age:"24",
+        gender:"여성",
+        magic:"별빛 마법",
+        star:"새벽의 별",
+        image:"",
+        description:
+        "밤하늘의 별을 읽어 미래를 예측하는 마법사. 사람들의 운명은 이미 정해져 있다고 믿었지만, 어느 날 자신의 별이 사라지는 것을 목격한다.",
+        like:"밤하늘 · 별자리 · 오래된 마법서",
+        dislike:"운명을 강요하는 것"
+    },
+    {
+        name:"에리안",
+        role:"KNIGHT",
+        title:"별을 잃은 기사",
+        age:"27",
+        gender:"남성",
+        magic:"성광",
+        star:"붉은 혜성",
+        image:"",
+        description:
+        "한때 왕국 최고의 기사였으나 자신의 운명을 결정한 별을 거부한 뒤 모든 것을 잃었다. 현재는 별의 낙하에 얽힌 사건을 조사하고 있다.",
+        like:"검술 · 새벽 · 조용한 장소",
+        dislike:"거짓말 · 운명론"
+    },
+    {
+        name:"카이렌",
+        role:"MAGE",
+        title:"금단의 별을 가진 자",
+        age:"29",
+        gender:"남성",
+        magic:"공허 마법",
+        star:"검은 별",
+        image:"",
+        description:
+        "세상에 존재해서는 안 되는 검은 별의 힘을 사용하는 마법사. 모든 것을 알고 있는 듯 행동하지만 자신의 과거에 대해서는 철저히 침묵한다.",
+        like:"고서 · 비밀 · 밤",
+        dislike:"동정 · 자신의 과거를 묻는 것"
+    },
+    {
+        name:"세리아",
+        role:"PRIESTESS",
+        title:"별의 사제",
+        age:"22",
+        gender:"여성",
+        magic:"치유의 별빛",
+        star:"푸른 별",
+        image:"",
+        description:
+        "별을 신으로 섬기는 성당의 사제. 모두의 운명을 믿고 있었지만 당신을 만난 이후 처음으로 자신의 신념에 의문을 품기 시작한다.",
+        like:"꽃 · 성당 · 따뜻한 차",
+        dislike:"싸움 · 피 · 불행한 미래"
+    },
+    {
+        name:"레온",
+        role:"ADVENTURER",
+        title:"별을 쫓는 모험가",
+        age:"25",
+        gender:"남성",
+        magic:"별의 불꽃",
+        star:"황금빛 별",
+        image:"",
+        description:
+        "세상에 떨어지는 별을 찾아 여행하는 자유로운 모험가. 언제나 웃고 있지만 그가 별을 찾아다니는 이유에는 아무에게도 말하지 않은 비밀이 있다.",
+        like:"모험 · 보물 · 축제",
+        dislike:"지루한 일상 · 감옥"
+    },
+    {
+        name:"아델",
+        role:"PRINCESS",
+        title:"운명을 거부한 왕녀",
+        age:"21",
+        gender:"여성",
+        magic:"별의 시간",
+        star:"은빛 별",
+        image:"",
+        description:
+        "태어날 때부터 정해진 운명을 가지고 있던 왕녀. 하지만 어느 날 미래에 자신이 죽게 된다는 사실을 알게 된 뒤 운명에 맞서기 시작한다.",
+        like:"밤 산책 · 책 · 당신",
+        dislike:"왕실 · 정해진 미래"
+    }
+];
+/* =====================================================
+   PAGE CHANGE
+===================================================== */
+function go(id){
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+            page.classList.remove("active");
+        });
+    const target =
+        document.getElementById(id);
+    if(target){
+        target.classList.add("active");
+    }
+}
+/* =====================================================
+   CHARACTER CARDS
+===================================================== */
+const grid =
+    document.getElementById(
+        "characterGrid"
+    );
+characters.forEach(
+    (character,index) => {
+        const card =
+            document.createElement("div");
+        card.className =
+            "character-card";
+        card.innerHTML = `
+            <div class="character-image">
+                ${
+                    character.image
+                    ?
+                    `<img
+                        src="${character.image}"
+                        alt="${character.name}"
+                    >`
+                    :
+                    `✦`
+                }
+            </div>
+            <div class="character-info">
+                <div class="character-number">
+                    ${String(index+1).padStart(2,"0")}
+                </div>
+                <div class="character-name">
+                    ${character.name}
+                </div>
+                <div class="character-role">
+                    ${character.title}
+                </div>
+            </div>
+        `;
+        card.onclick =
+            () => openCharacter(index);
+        grid.appendChild(card);
+    }
+);
+/* =====================================================
+   CHARACTER DETAIL
+===================================================== */
+function openCharacter(index){
+    const c =
+        characters[index];
+    document.getElementById(
+        "detailRole"
+    ).textContent =
+        c.role;
+    document.getElementById(
+        "detailName"
+    ).textContent =
+        c.name;
+    document.getElementById(
+        "detailTitle"
+    ).textContent =
+        c.title;
+    document.getElementById(
+        "detailAge"
+    ).textContent =
+        c.age;
+    document.getElementById(
+        "detailGender"
+    ).textContent =
+        c.gender;
+    document.getElementById(
+        "detailMagic"
+    ).textContent =
+        c.magic;
+    document.getElementById(
+        "detailStar"
+    ).textContent =
+        c.star;
+    document.getElementById(
+        "detailDescription"
+    ).textContent =
+        c.description;
+    document.getElementById(
+        "detailLike"
+    ).textContent =
+        c.like;
+    document.getElementById(
+        "detailDislike"
+    ).textContent =
+        c.dislike;
+    const img =
+        document.getElementById(
+            "detailImage"
+        );
+    const placeholder =
+        document.getElementById(
+            "detailPlaceholder"
+        );
+    if(c.image){
+        img.src = c.image;
+        img.style.display =
+            "block";
+        placeholder.style.display =
+            "none";
+    }
+    else{
+        img.style.display =
+            "none";
+        placeholder.style.display =
+            "flex";
+    }
+    go("detail");
+}
+/* =====================================================
+   CLICK STAR EFFECT
+===================================================== */
+document.addEventListener(
+    "click",
+    function(e){
+        const star =
+            document.createElement(
+                "div"
+            );
+        star.className =
+            "click-magic";
+        star.style.left =
+            e.clientX + "px";
+        star.style.top =
+            e.clientY + "px";
+        document.body.appendChild(star);
+        setTimeout(
+            () => star.remove(),
+            700
+        );
+    }
+);
+/* =====================================================
+   LOGO / ESC
+===================================================== */
+document.addEventListener(
+    "keydown",
+    function(e){
+        if(e.key === "Escape"){
+            go("home");
+        }
+    }
+);
+</script>
+</body>
+</html>
